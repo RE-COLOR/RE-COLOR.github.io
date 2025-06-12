@@ -1,0 +1,430 @@
+<html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моды - RE:COLOR Minecraft Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            background-attachment: fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .glass {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            border: 2px solid rgba(138, 43, 226, 0.4);
+            box-shadow: 0 8px 32px rgba(75, 0, 130, 0.3), 0 0 10px rgba(138, 43, 226, 0.2);
+            padding: 30px;
+            margin: 20px 0;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .glass:hover {
+            border-color: rgba(138, 43, 226, 0.6);
+            box-shadow: 0 8px 32px rgba(75, 0, 130, 0.4), 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #fff, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #cdcdcd;
+            text-decoration: none;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffffff;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(138, 43, 226, 0.7);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #ffffff, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            font-size: 1.1rem;
+            color: #c0c0c0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .mods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+            perspective: 1000px;
+        }
+
+        .mod-card {
+            background: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 10px rgba(138, 43, 226, 0.2);
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            /* Добавляем z-index для правильного отображения при увеличении */
+            z-index: 1;
+        }
+
+        .mod-card:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(138, 43, 226, 0.5);
+            border-color: rgba(138, 43, 226, 0.7);
+            /* Увеличиваем z-index при наведении */
+            z-index: 10;
+        }
+
+        .mod-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(138, 43, 226, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1;
+        }
+
+        .mod-card:hover::before {
+            opacity: 1;
+        }
+
+        .mod-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mod-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            filter: brightness(0.8);
+        }
+
+        .mod-card:hover .mod-image img {
+            transform: scale(1.05);
+            filter: brightness(1);
+        }
+
+        .mod-content {
+            padding: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .mod-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #ffffff, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .mod-description {
+            color: #c0c0c0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .mod-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(45, 45, 45, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mod-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .mod-link:hover::before {
+            left: 100%;
+        }
+
+        .mod-link:hover {
+            background: rgba(138, 43, 226, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(138, 43, 226, 0.5);
+            border-color: rgba(138, 43, 226, 0.6);
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+        }
+
+        .back-btn:hover {
+            background: rgba(138, 43, 226, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 8px rgba(138, 43, 226, 0.5);
+            border-color: rgba(138, 43, 226, 0.6);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #888888;
+        }
+
+        /* Анимация появления карточек */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mod-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .mod-card:nth-child(1) { animation-delay: 0.1s; }
+        .mod-card:nth-child(2) { animation-delay: 0.2s; }
+        .mod-card:nth-child(3) { animation-delay: 0.3s; }
+        .mod-card:nth-child(4) { animation-delay: 0.4s; }
+        .mod-card:nth-child(5) { animation-delay: 0.5s; }
+        .mod-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @media (max-width: 768px) {
+            .mods-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .page-title h1 {
+                font-size: 2.5rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav ul li {
+                margin-left: 0;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .mod-card:hover {
+                transform: scale(1.03);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="glass">
+            <div class="logo">RE:COLOR</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="mods.html">Моды</a></li>
+                    <li><a href="#">Ссылки</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        
+
+        <div class="page-title">
+            <h1>Моды проекта</h1>
+            <p>Коллекция лучших модификаций для улучшения игрового опыта в Minecraft</p>
+        </div>
+
+        <div class="mods-grid">
+            <!-- Мод 1 -->
+            <div class="mod-card" style="transform: scale(1) rotateX(0deg) rotateY(0deg); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                <div class="mod-image">
+                    <img src="?w=400&amp;h=200&amp;fit=crop" alt="OptiFine">
+                </div>
+                <div class="mod-content">
+                    <h3 class="mod-title">OptiFine</h3>
+                    <p class="mod-description">Улучшает производительность игры, добавляет множество графических настроек и поддержку шейдеров для создания потрясающих визуальных эффектов.</p>
+                    <a href="https://optifine.net/" class="mod-link" target="_blank">Скачать мод</a>
+                </div>
+            </div>
+
+            <!-- Мод 2 -->
+            <div class="mod-card" style="transform: scale(1) rotateX(0deg) rotateY(0deg); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                <div class="mod-image">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&amp;h=200&amp;fit=crop" alt="JEI">
+                </div>
+                <div class="mod-content">
+                    <h3 class="mod-title">Just Enough Items (JEI)</h3>
+                    <p class="mod-description">Мощный помощник для просмотра рецептов крафта и использования предметов. Незаменимый инструмент для игры с модами.</p>
+                    <a href="https://www.curseforge.com/minecraft/mc-mods/jei" class="mod-link" target="_blank">Скачать мод</a>
+                </div>
+            </div>
+
+            <!-- Мод 3 -->
+            
+
+            <!-- Мод 4 -->
+            
+
+            <!-- Мод 5 -->
+            
+
+            <!-- Мод 6 -->
+            
+        </div>
+
+        <footer class="glass">
+            <p>© 2025 RE:COLOR Minecraft Project. Все права защищены.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Исправленный JavaScript для правильного увеличения всей карточки
+        document.querySelectorAll('.mod-card').forEach(card => {
+            let isHovered = false;
+
+            card.addEventListener('mouseenter', () => {
+                isHovered = true;
+                // Увеличиваем всю карточку целиком
+                card.style.transform = 'scale(1.1)';
+                card.style.transition = 'all 0.3s ease';
+            });
+
+            card.addEventListener('mousemove', (e) => {
+                if (!isHovered) return;
+                
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Вычисляем расстояние от центра
+                const distanceX = (x - centerX) / centerX;
+                const distanceY = (y - centerY) / centerY;
+                
+                // Небольшой наклон для 3D эффекта
+                const rotateY = distanceX * 8; // уменьшили силу наклона
+                const rotateX = -distanceY * 8;
+                
+                // Применяем увеличение + небольшой наклон ко всей карточке
+                card.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                card.style.transition = 'transform 0.1s ease-out';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                isHovered = false;
+                // Возвращаем карточку в исходное состояние
+                card.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+                card.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            });
+        });
+    </script>
+</body></html>

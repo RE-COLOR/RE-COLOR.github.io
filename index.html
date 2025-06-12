@@ -1,0 +1,402 @@
+<html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COSMP - Minecraft Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            background-attachment: fixed;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .glass {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            border: 2px solid rgba(138, 43, 226, 0.4);
+            box-shadow: 0 8px 32px rgba(75, 0, 130, 0.3), 0 0 10px rgba(138, 43, 226, 0.2);
+            padding: 30px;
+            margin: 20px 0;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .glass:hover {
+            border-color: rgba(138, 43, 226, 0.6);
+            box-shadow: 0 8px 32px rgba(75, 0, 130, 0.4), 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #fff, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #cdcdcd;
+            text-decoration: none;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffffff;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(138, 43, 226, 0.7);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(138, 43, 226, 0.4);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/800/400') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: -1;
+            filter: grayscale(40%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(90deg, #ffffff, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 30px;
+            color: #d0d0d0;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: rgba(45, 45, 45, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: rgba(138, 43, 226, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 0 8px rgba(138, 43, 226, 0.5);
+            border-color: rgba(138, 43, 226, 0.6);
+        }
+
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ffffff, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #c0c0c0;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 5px rgba(138, 43, 226, 0.3);
+            filter: grayscale(30%);
+            transition: filter 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .about-image img:hover {
+            filter: grayscale(0%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .about-author h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ffffff, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-author p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #c0c0c0;
+        }
+
+        .about-author a {
+            color: #9370DB;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .about-author a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #888888;
+        }
+
+        /* Дополнительные стили для страницы автора */
+        .author-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .author-logo svg {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.4));
+        }
+
+        .skill-bars {
+            display: grid;
+            gap: 15px;
+        }
+
+        .skill-bar {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 15px;
+        }
+
+        .skill-progress {
+            height: 10px;
+            background: linear-gradient(90deg, #8a2be2, #9370DB);
+            border-radius: 0 0 10px 10px;
+        }
+
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .project-item {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 8px rgba(138, 43, 226, 0.4);
+            border-color: rgba(138, 43, 226, 0.5);
+        }
+
+        /* Стили для формы */
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: rgba(138, 43, 226, 0.7);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+        }
+
+        /* Стили для видео и презентации */
+        .video-container, .presentation-container {
+            border: 2px solid rgba(138, 43, 226, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .video-item, .slide-item {
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .video-item:hover, .slide-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 10px rgba(138, 43, 226, 0.4);
+            border-color: rgba(138, 43, 226, 0.6);
+        }
+
+        /* Стили для кнопок */
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .back-btn:hover {
+            background: rgba(138, 43, 226, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 8px rgba(138, 43, 226, 0.5);
+            border-color: rgba(138, 43, 226, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .about-section, .author-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav ul li {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="glass">
+            <div class="logo">RE:COLOR</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="#">Моды</a></li>
+                    <li><a href="#">Ссылки</a></li>
+                    
+                    
+                </ul>
+            </nav>
+        </header>
+
+        <section class="hero glass">
+            <h1>RE:COLOR Minecraft Project</h1>
+            <p>Добро пожаловать на официальный сайт проекта RE:COLOR в Minecraft. Погрузитесь в удивительный мир творчества, стратегии и бесконечных возможностей.</p>
+            <div class="buttons">
+                
+                
+                <a href="form.html" class="btn">Присоединиться</a>
+            </div>
+        </section>
+
+        
+
+        
+
+        <footer class="glass">
+            <p>© 2025 RE:COLOR Minecraft Project. Все права защищены.</p>
+        </footer>
+    </div>
+
+</body></html>
